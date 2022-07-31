@@ -1,4 +1,5 @@
 import express from 'express';
+import { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -29,12 +30,12 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
-  app.get("/filteredimage", async(req, resp) => {
+  app.get("/filteredimage", async(req: Request, resp: Response) => {
     let { image_url } = req.query
     if (!image_url) {
       return resp.status(400).send({result: "ERROR", message: "image_url is not valid"})
     }
-    const imgResult = await filterImageFromURL(image_url)
+    const imgResult: string = await filterImageFromURL(image_url) as string
     resp.sendFile(imgResult, {}, function (err) {
       if (err) {
         return resp.status(400).send({result: "ERROR", message: "Exception happened"})
